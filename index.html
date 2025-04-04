@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo Termo - Bisturi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 200px;
+      text-transform: lowercase;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .tentativas {
+      margin-top: 20px;
+      width: 300px;
+      text-align: center;
+    }
+    .letra {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      margin: 2px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: white;
+    }
+    .correto { background-color: green; }
+    .errado { background-color: gray; }
+    .lugar-errado { background-color: orange; }
+  </style>
+</head>
+<body>
+  <h1>Jogo Termo</h1>
+  <input type="text" id="palpite" maxlength="7" placeholder="Digite uma palavra de 7 letras" />
+  <button onclick="verificarPalpite()">Enviar</button>
+  <div class="tentativas" id="tentativas"></div>
+
+  <script>
+    const resposta = "bisturi";
+    const maxTentativas = 6;
+    let tentativasFeitas = 0;
+
+    function verificarPalpite() {
+      const input = document.getElementById('palpite');
+      const palavra = input.value.toLowerCase();
+      
+      if (palavra.length !== 7) {
+        alert("A palavra deve ter 7 letras.");
+        return;
+      }
+
+      const container = document.getElementById('tentativas');
+      const linha = document.createElement('div');
+
+      for (let i = 0; i < palavra.length; i++) {
+        const span = document.createElement('span');
+        span.classList.add('letra');
+        span.textContent = palavra[i];
+
+        if (i < resposta.length && palavra[i] === resposta[i]) {
+          span.classList.add('correto');
+        } else if (resposta.includes(palavra[i])) {
+          span.classList.add('lugar-errado');
+        } else {
+          span.classList.add('errado');
+        }
+
+        linha.appendChild(span);
+      }
+
+      container.appendChild(linha);
+      tentativasFeitas++;
+
+      if (palavra === resposta) {
+        alert("Parabéns! Você acertou a palavra!");
+        input.disabled = true;
+      } else if (tentativasFeitas >= maxTentativas) {
+        alert("Fim de jogo! A palavra era '" + resposta + "'.");
+        input.disabled = true;
+      }
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
