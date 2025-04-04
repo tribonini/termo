@@ -59,13 +59,13 @@
 </head>
 <body>
   <h1>Termo da Alcatraz</h1>
-  <input type="text" id="nome" placeholder="Seu Nome" />
-  <input type="text" id="palpite" maxlength="7" placeholder="Digite um nome próprio de 7 letras" />
+  <input type="text" id="nome" placeholder="Nome da Equipe" />
+  <input type="text" id="palpite" maxlength="6" placeholder="Digite um nome próprio de 6 letras" />
   <button onclick="verificarPalpite()">Enviar</button>
   <div class="tentativas" id="tentativas"></div>
 
   <script>
-    const resposta = "RODRIGO";
+    const resposta = "SAMARA";
     const maxTentativas = 10;
     let tentativasFeitas = 0;
     let jogoEncerrado = false;
@@ -81,12 +81,12 @@
       const palavra = input.value.toUpperCase();
       
       if (!nome) {
-        alert("Por favor, insira seu nome antes de jogar.");
+        alert("Por favor, preencha o nome da equipe antes de jogar.");
         return;
       }
 
-      if (palavra.length !== 7) {
-        alert("O nome deve ter exatamente 7 letras.");
+      if (palavra.length !== 6) {
+        alert("O nome deve ter exatamente 6 letras.");
         return;
       }
 
@@ -113,11 +113,11 @@
       tentativasFeitas++;
 
       if (palavra === resposta) {
-        alert("Parabéns, " + nome + "! Você acertou o nome!");
+        alert("Parabéns, " + nome + "! A equipe acertou o nome!");
         jogoEncerrado = true;
         input.disabled = true;
       } else if (tentativasFeitas >= maxTentativas) {
-        alert("Fim de jogo, " + nome + "! O nome correto era '" + resposta + "'.");
+        alert("Fim de jogo para a equipe " + nome + "! O nome correto era '" + resposta + "'.");
         jogoEncerrado = true;
         input.disabled = true;
       }
