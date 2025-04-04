@@ -23,7 +23,7 @@
       padding: 10px;
       font-size: 18px;
       width: 250px;
-      text-transform: uppercase;
+      text-transform: capitalize;
       margin-bottom: 10px;
     }
     button {
@@ -59,28 +59,34 @@
 </head>
 <body>
   <h1>Termo da Alcatraz</h1>
-  <input type="text" id="equipe" placeholder="Nome da equipe" />
-  <input type="text" id="palpite" maxlength="7" placeholder="Digite uma palavra de 7 letras" />
+  <input type="text" id="nome" placeholder="Seu Nome" />
+  <input type="text" id="palpite" maxlength="7" placeholder="Digite um nome próprio de 7 letras" />
   <button onclick="verificarPalpite()">Enviar</button>
   <div class="tentativas" id="tentativas"></div>
 
   <script>
-    const resposta = "bisturi";
-    const maxTentativas = 8;
+    const resposta = "RODRIGO";
+    const maxTentativas = 10;
     let tentativasFeitas = 0;
+    let jogoEncerrado = false;
 
     function verificarPalpite() {
-      const equipe = document.getElementById('equipe').value.trim();
+      if (jogoEncerrado) {
+        alert("Você já jogou! Aguarde a próxima rodada.");
+        return;
+      }
+
+      const nome = document.getElementById('nome').value.trim();
       const input = document.getElementById('palpite');
-      const palavra = input.value.toLowerCase();
+      const palavra = input.value.toUpperCase();
       
-      if (!equipe) {
-        alert("Por favor, insira o nome da equipe antes de jogar.");
+      if (!nome) {
+        alert("Por favor, insira seu nome antes de jogar.");
         return;
       }
 
       if (palavra.length !== 7) {
-        alert("A palavra deve ter 7 letras.");
+        alert("O nome deve ter exatamente 7 letras.");
         return;
       }
 
@@ -90,7 +96,7 @@
       for (let i = 0; i < palavra.length; i++) {
         const span = document.createElement('span');
         span.classList.add('letra');
-        span.textContent = palavra[i].toUpperCase();
+        span.textContent = palavra[i];
 
         if (palavra[i] === resposta[i]) {
           span.classList.add('correto');
@@ -107,23 +113,16 @@
       tentativasFeitas++;
 
       if (palavra === resposta) {
-        alert("Parabéns, " + equipe + "! Você acertou a palavra!");
-        enviarEmail(equipe, "Acertou!");
+        alert("Parabéns, " + nome + "! Você acertou o nome!");
+        jogoEncerrado = true;
         input.disabled = true;
       } else if (tentativasFeitas >= maxTentativas) {
-        alert("Fim de jogo, " + equipe + "! A palavra era '" + resposta + "'.");
-        enviarEmail(equipe, "Não acertou. Palavra correta: " + resposta);
+        alert("Fim de jogo, " + nome + "! O nome correto era '" + resposta + "'.");
+        jogoEncerrado = true;
         input.disabled = true;
       }
 
       input.value = "";
-    }
-
-    function enviarEmail(equipe, resultado) {
-      const email = "dalbellobonini@hotmail.com";
-      const assunto = encodeURIComponent("Resultado do Termo da Alcatraz");
-      const corpo = encodeURIComponent("Equipe: " + equipe + "\nResultado: " + resultado);
-      window.location.href = `mailto:${email}?subject=${assunto}&body=${corpo}`;
     }
   </script>
 </body>
